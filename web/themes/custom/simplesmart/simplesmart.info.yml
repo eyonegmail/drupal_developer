@@ -1,0 +1,19 @@
+name: Simple Smart Classy Version
+type: theme
+description: "A sleek & practical theme for curious minds."
+core_version_requirement: ^9 || ^10
+base theme: olivero
+screenshot: simplesmartscreenshot.png
+
+regions:
+  header: Header
+  mythememenu: Navigation
+  content: Content
+  footer: Footer
+  page_top: Page top
+  page_bottom: Page bottom
+
+libraries:
+  - simplesmart/global-css
+  - simplesmart/global-js
+
