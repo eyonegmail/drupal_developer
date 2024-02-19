@@ -97,8 +97,7 @@
         </div>
       {% endif %}
         <span{{ author_attributes }}>
-        {% set datetime = node.getCreatedTime|format_date('long') %}
-          {{ 'By'|t }} {% apply spaceless %}{{ author_name }}{% endapply %}, {{ datetime }}
+          {{ 'By'|t }} {% apply spaceless %}{{ author_name }}{% endapply %}, {{ date }}
         </span>
         {{ metadata }}
       </div>
