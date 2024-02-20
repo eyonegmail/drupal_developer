@@ -16,8 +16,8 @@ function simplesmart_form_system_theme_settings_alter(&$form, FormStateInterface
     '#type' => 'select',
     '#title' => t('Font Family'),
     '#options' => [
-      'none' => t('N/A'),
-      'pacifico' => t('Pacifico'),
+      '' => t('N/A'),
+      'simplesmart/pacifico' => t('Pacifico'),
     ],
     '#default_value' => theme_get_setting('font_family'),
   ];

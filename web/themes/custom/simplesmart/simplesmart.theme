@@ -12,8 +12,9 @@ use Drupal\user\Entity\User;
  * Implements hook_preprocess_HOOK().
  */
 function simplesmart_page_attachments_alter(&$page) {
-  if (!empty(theme_get_setting('font_family')) && theme_get_setting('font_family') != 'none') {
-    $page['#attached']['library'][] = 'simplesmart/' . theme_get_setting('font_family');
+  $font = theme_get_setting('font_family');
+  if ($font) {
+    $page['#attached']['library'][] = $font;
   }
 
   $user = User::load(\Drupal::currentUser()->id());
