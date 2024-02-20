@@ -20,3 +20,4 @@ global-js:
     js/script.js: {}
   dependencies:
     - core/drupalSettings
+    - core/once
