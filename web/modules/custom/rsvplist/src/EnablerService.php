@@ -12,20 +12,6 @@ use Drupal\node\Entity\Node;
 class EnablerService {
 
   /**
-   * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected $database;
-
-  /**
-   * The messenger.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
-
-  /**
    * Constructs a ReportController object.
    *
    * @param \Drupal\Core\Database\Connection $database
@@ -33,9 +19,10 @@ class EnablerService {
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger.
    */
-  public function __construct(Connection $database, MessengerInterface $messenger) {
-    $this->database = $database;
-    $this->messenger = $messenger;
+  public function __construct(
+    protected Connection $database,
+    protected MessengerInterface $messenger
+  ) {
   }
 
   /**
