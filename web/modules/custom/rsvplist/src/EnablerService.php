@@ -3,6 +3,7 @@
 namespace Drupal\rsvplist;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\node\Entity\Node;
 
 /**
@@ -11,12 +12,30 @@ use Drupal\node\Entity\Node;
 class EnablerService {
 
   /**
+   * The database connection.
+   *
    * @var \Drupal\Core\Database\Connection
    */
-  protected $databaseConnection;
+  protected $database;
 
-  public function __construct(Connection $connection) {
-    $this->databaseConnection = $connection;
+  /**
+   * The messenger.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * Constructs a ReportController object.
+   *
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
+   */
+  public function __construct(Connection $database, MessengerInterface $messenger) {
+    $this->database = $database;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -33,14 +52,14 @@ class EnablerService {
       return FALSE;
     }
     try {
-      $select = $this->databaseConnection->select('rsvplist_enabled', 're');
+      $select = $this->database->select('rsvplist_enabled', 're');
       $select->fields('re', ['nid']);
       $select->condition('nid', $node->id());
       $results = $select->execute();
       return !(empty($results->fetchCol()));
     }
     catch (\Throwable $th) {
-      \Drupal::messenger()->addError($this->t('Unable to determine RSVP settings at this time. Please try again.'));
+      $this->messenger->addError($this->t('Unable to determine RSVP settings at this time. Please try again.'));
       return NULL;
     }
   }
@@ -49,20 +68,21 @@ class EnablerService {
    * Sets an individual node to be RSVP enabled.
    *
    * @param \Drupal\node\Entity\Node $node
+   *   The node.
    *
    * @throws Exception
    */
   public function setEnabled(Node $node) {
     try {
       if (!($this->isEnabled($node))) {
-        $insert = $this->databaseConnection->insert('rsvplist_enabled');
+        $insert = $this->database->insert('rsvplist_enabled');
         $insert->fields(['nid']);
         $insert->values([$node->id()]);
         $insert->execute();
       }
     }
     catch (\Throwable $th) {
-      \Drupal::messenger()->addError($this->t('Unable to save RSVP settings at this time. Please try again.'));
+      $this->messenger->addError($this->t('Unable to save RSVP settings at this time. Please try again.'));
     }
   }
 
@@ -74,12 +94,12 @@ class EnablerService {
    */
   public function delEnabled(Node $node) {
     try {
-      $delete = $this->databaseConnection->delete('rsvplist_enabled');
+      $delete = $this->database->delete('rsvplist_enabled');
       $delete->condition('nid', $node->id());
       $delete->execute();
     }
     catch (\Throwable $th) {
-      \Drupal::messenger()->addError($this->t('Unable to save RSVP settings at this time. Please try again.'));
+      $this->messenger->addError($this->t('Unable to save RSVP settings at this time. Please try again.'));
     }
   }
 

@@ -3,11 +3,51 @@
 namespace Drupal\rsvplist\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Messenger\MessengerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provide Report page.
  */
 class ReportController extends ControllerBase {
+
+  /**
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
+   * The messenger.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * Constructs a ReportController object.
+   *
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
+   */
+  public function __construct(Connection $database, MessengerInterface $messenger) {
+    $this->database = $database;
+    $this->messenger = $messenger;
+  }
+
+  /**
+   * Create services.
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('database'),
+      $container->get('messenger'),
+    );
+  }
 
   /**
    * Gets and returns all RSVPs for all nodes.
@@ -20,7 +60,8 @@ class ReportController extends ControllerBase {
   protected function load() {
     try {
       // https://www.drupal.org/docs/10/api/database-api/dynamic-queries/introduction-to-dynamic-queries
-      $database = \Drupal::database();
+      // $database = \Drupal::database();
+      $database = $this->database;
       $select_query = $database->select('rsvplist', 'r');
       // Join the user table, so we can get the entry creator's username.
       $select_query->join('users_field_data', 'u', 'r.uid = u.uid');
@@ -43,7 +84,10 @@ class ReportController extends ControllerBase {
     }
     catch (\Throwable $th) {
       // Display a user-friendly error.
-      \Drupal::messenger()->addStatus(
+      // \Drupal::messenger()->addStatus(
+      //   $this->t('Unable to access the database at this time. Please try again later.')
+      // );.
+      $this->messenger->addStatus(
         $this->t('Unable to access the database at this time. Please try again later.')
       );
       return NULL;

@@ -1,4 +1,4 @@
 services:
   rsvplist.enabler:
     class: Drupal\rsvplist\EnablerService
-    arguments: ['@database']
+    arguments: ['@database', '@messenger']
