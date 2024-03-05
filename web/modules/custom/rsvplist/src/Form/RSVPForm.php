@@ -130,6 +130,12 @@ class RSVPForm extends FormBase {
       '#description' => $this->t("We will send update to the email address you provide."),
       '#required' => TRUE,
     ];
+    $form['code'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Special Code'),
+      '#size' => '',
+      '#description' => $this->t("If you have an special code, please input."),
+    ];
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('RSVP'),
@@ -146,7 +152,6 @@ class RSVPForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $value = $form_state->getValue('email');
-    // If (!(\Drupal::service('email.validator')->isValid($value))) {.
     if (!($this->emailValidator->isValid($value))) {
       $form_state->setErrorByName('email', $this->t('It appears that %mail is not a valid email. Please try again.', ['%mail' => $value]));
     }
@@ -170,6 +175,7 @@ class RSVPForm extends FormBase {
       // Obtain values as entered into the Form.
       $nid = $form_state->getValue('nid');
       $email = $form_state->getValue('email');
+      $code = $form_state->getValue('code');
       // $current_time = \Drupal::time()->getRequestTime();
       $current_time = $this->time->getRequestTime();
       // End Phase 1.
@@ -183,6 +189,7 @@ class RSVPForm extends FormBase {
         'uid',
         'nid',
         'mail',
+        'code',
         'created',
       ]);
       // Set the values of the fields we selected.
@@ -192,6 +199,7 @@ class RSVPForm extends FormBase {
         $uid,
         $nid,
         $email,
+        $code,
         $current_time,
       ]);
       // Execute the query!

@@ -5,6 +5,8 @@
  * Install, update and uninstall functions for the rsvplist module.
  */
 
+use Drupal\Core\Database\Database;
+
 /**
  * Define tables for RSVP listings.
  */
@@ -41,6 +43,13 @@ function rsvplist_schema() {
         'not null' => FALSE,
         'default' => '',
       ],
+      'code' => [
+        'description' => "Special code.",
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'default' => '',
+      ],
       'created' => [
         'description' => 'Timestamp for when RSVP was created.',
         'type' => 'int',
@@ -72,4 +81,20 @@ function rsvplist_schema() {
   ];
 
   return $schema;
+}
+
+/**
+ * Schema update. ddev drush updb.
+ */
+function rsvplist_update_10000() {
+  $code = [
+    'description' => "Special code.",
+    'type' => 'varchar',
+    'length' => 64,
+    'not null' => FALSE,
+    'default' => '',
+  ];
+  $schema = Database::getConnection()->schema();
+  $schema->addField('rsvplist', 'code', $code);
+
 }

@@ -71,6 +71,7 @@ class ReportController extends ControllerBase {
       $select_query->addField('u', 'name', 'username');
       $select_query->addField('n', 'title');
       $select_query->addField('r', 'mail');
+      $select_query->addField('r', 'code');
       // Note that fetchAll() and fetchAllAssoc() will, by default, fetch using
       // whatever fetch mode was set on the query
       // (i.e. numeric array, associative array, or object).
@@ -109,6 +110,7 @@ class ReportController extends ControllerBase {
       $this->t('Username'),
       $this->t('Event'),
       $this->t('Email'),
+      $this->t('Special Code'),
     ];
     // Because load() returns an associative array with each table row
     // as its own array, we can simply define the HTML table rows like this:
