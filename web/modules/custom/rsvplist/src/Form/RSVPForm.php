@@ -135,6 +135,7 @@ class RSVPForm extends FormBase {
       '#title' => $this->t('Special Code'),
       '#size' => '',
       '#description' => $this->t("If you have an special code, please input."),
+      '#default_value' => \Drupal::request()->get('code'),
     ];
     $form['submit'] = [
       '#type' => 'submit',

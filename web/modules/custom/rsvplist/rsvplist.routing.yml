@@ -13,3 +13,16 @@ rsvplist.report:
     _title: List of RSVPs
   requirements:
     _permission: access rsvplist report
+
+rsvplist.node_page:
+  path: '/node/{nid}/{code}'
+  defaults:
+    _controller: '\Drupal\rsvplist\Controller\ShowNodePageController::showNodePage'
+    _title: 'Node Page'
+  requirements:
+    _permission: 'access content'
+    nid: '\d+'
+  options:
+    parameters:
+      nid:
+        type: entity:node
