@@ -1,0 +1,80 @@
+{
+	"folders": [
+    {
+      "path": "./"
+    }
+  ],
+	"settings": {
+    "terminal.integrated.profiles.osx": {
+      "zsh": { "path": "/bin/zsh", "args": ["-l", "-i"] }
+  	},
+    "commentTranslate.hover.enabled": true,
+    "terminal.integrated.inheritEnv": false,
+    // phpcs. see https://www.drupal.org/docs/develop/development-tools/configuring-visual-studio-code#s-drupal-code-standards-configuration
+    "phpcs.enable": true,
+    "phpcs.standard": "Drupal,DrupalPractice",
+    "phpcs.executablePath": "/Users/yonekawaemi/.composer/vendor/bin/phpcs",
+    // phpcbf
+    "phpcbf.standard": "Drupal,DrupalPractice",
+    "phpcbf.executablePath": "/Users/yonekawaemi/.composer/vendor/bin/phpcbf",
+    "[php]": {
+      "editor.defaultFormatter": "persoderlind.vscode-phpcbf"
+    },
+    // PHP DocBlocker. see https://www.drupal.org/docs/develop/development-tools/configuring-visual-studio-code#s-php-docblocks
+    "php-docblocker.useShortNames": true,
+    "php-docblocker.propertyTemplate": {
+      "@file": {
+        "content": "@file"
+      },
+    },
+    "files.associations": {
+      "*.inc": "php",
+      "*.module": "php",
+      "*.install": "php",
+      "*.theme": "php",
+      "*.profile": "php",
+      "*.tpl.php": "php",
+      "*.test": "php",
+      "*.php": "php",
+      "*.info": "ini"
+    },
+    "search.useIgnoreFiles": false,
+    "editor.tabSize": 2
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Listen for Xdebug",
+        "type": "php",
+        "request": "launch",
+        "hostname": "edrupal03.ddev.site",
+        "port": 9003,
+        "pathMappings": {
+            "/var/www/html": "${workspaceFolder}"
+        },
+        "preLaunchTask": "DDEV: Enable Xdebug",
+        "postDebugTask": "DDEV: Disable Xdebug"
+      },
+
+
+    ]
+  },
+  "tasks": {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "DDEV: Enable Xdebug",
+            "type": "shell",
+            "command": "ddev xdebug on"
+        },
+        {
+            "label": "DDEV: Disable Xdebug",
+            "type": "shell",
+            "command": "ddev xdebug off"
+        }
+    ]
+}
+}
